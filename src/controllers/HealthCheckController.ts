@@ -3,7 +3,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 
 import Controller from "./Controller";
 
-class HealthCheckController extends Controller {
+class HealthController extends Controller {
 
     public constructor(
     ) {
@@ -29,4 +29,4 @@ class HealthCheckController extends Controller {
     }
 }
 
-export default HealthCheckController;
+export default HealthController;
