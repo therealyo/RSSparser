@@ -1,0 +1,21 @@
+name: deploy dokku
+on:
+  push:
+    branches:
+      - master
+jobs:
+  master:
+    name: Production pipeline
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0  
+    
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: 'ssh://dokku@18.134.182.196:22/rss-parser'
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}

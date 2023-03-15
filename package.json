@@ -1,0 +1,47 @@
+{
+  "name": "rss_parser",
+  "version": "1.0.0",
+  "description": "rss_parser nodejs",
+  "scripts": {
+    "start": "node ./dist/index.js",
+    "build": "esbuild src/index.ts --platform=node --target=node16.4 --format=cjs --bundle --minify --main-fields=main --outfile=dist/index.js --external:pg-native",
+    "dev": "nodemon",
+    "lint": "eslint --fix --ext .ts ./src",
+    "migration": "npx drizzle-kit generate:pg",
+    "t": "tsc"
+  },
+  "author": "Daniil Pshenik",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@types/axios": "^0.14.0",
+    "axios": "^1.3.4",
+    "cors": "^2.8.5",
+    "cron": "^2.2.0",
+    "dotenv": "^16.0.3",
+    "drizzle-orm": "^0.21.1",
+    "esbuild": "^0.17.11",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.41",
+    "pg": "^8.10.0",
+    "response-time": "^2.3.2",
+    "rss-parser": "^3.12.0",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/cron": "^2.0.0",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.15.3",
+    "@types/nodemon": "^1.19.2",
+    "@types/pg": "^8.6.6",
+    "@types/response-time": "^2.3.5",
+    "drizzle-kit": "^0.17.0",
+    "nodemon": "^2.0.21",
+    "tsconfig-paths": "^4.1.2",
+    "typescript": "^4.9.4"
+  }
+}
