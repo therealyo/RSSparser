@@ -7,6 +7,7 @@ import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import App from './App';
 import Controller from './controllers/Controller';
 import process from 'process';
+import HealthCheckController from './controllers/HealthCheckController';
 // import RssParser from './cron/processes/RssParser';
 // import Cron from './cron/Cron';
 
@@ -26,11 +27,15 @@ const main = async () => {
     const db = drizzle(pool)
     // await migrate(db, { migrationsFolder: './migrations' });
 
-    const controllers: Controller[] = [];
+    const healthCheckContoller = new HealthCheckController()
+    const controllers: Controller[] = [
+      healthCheckContoller
+    ];
 
     // const cron = new Cron()
     // const rssTask = new RssParser()
     // cron.addProcess(rssTask);
+
     const port = process.env.APP_PORT;
     const app = new App(controllers, port);
     app.listen();
