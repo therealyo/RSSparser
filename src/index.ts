@@ -1,15 +1,23 @@
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
 import 'express-async-errors';
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 
-import App from './App';
-import Controller from './controllers/Controller';
-import HealthController from './controllers/HealthCheckController';
+import App from '@/App';
+
+import Controller from '@/controllers/Controller';
+import HealthController from '@/controllers/HealthController';
+import PostsController from '@/controllers/PostsController';
+
+import Posts from '@/repositories/Posts';
+import { sql } from 'drizzle-orm';
 // import RssParser from './cron/processes/RssParser';
 // import Cron from './cron/Cron';
 
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config()
+}
 
 const main = async () => {
   try {
@@ -24,11 +32,16 @@ const main = async () => {
 
 
     const db = drizzle(pool)
-    // await migrate(db, { migrationsFolder: './migrations' });
+    await migrate(db, { migrationsFolder: './migrations' });
+
+    const posts = new Posts(db)
 
     const healthController = new HealthController()
+    const postsController = new PostsController(posts)
+    
     const controllers: Controller[] = [
-      healthController
+      healthController,
+      postsController
     ];
 
     // const cron = new Cron()
