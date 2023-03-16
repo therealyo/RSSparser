@@ -1,8 +1,8 @@
-POSTGRES_HOST = localhost
-POSTGRES_PORT = 5432
-POSTGRES_USER = postgres
-POSTGRES_PASSWORD = password
-POSTGRES_DB = rss_parser
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+POSTGRES_DB=rss_parser
 database = postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)?sslmode=disable
 
 # ------------------------------------------------------NPM commands----------------------------------------------------
@@ -26,7 +26,7 @@ build:
 
 .PHONY: run-database
 run-database:
-	docker run --name my-postgres -e POSTGRES_USER=$(POSTGRES_USER) -e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) -e POSTGRES_DB=$(POSTGRES_DB) -p 5432:5432 -d postgres:13
+	docker run --name my-postgres -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -e POSTGRES_DB=$POSTGRES_DB -p 5432:5432 -d postgres:13
 
 .PHONY: build-docker
 build-docker: 

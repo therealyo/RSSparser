@@ -6,7 +6,7 @@
     "start": "node ./dist/index.js",
     "build": "esbuild src/index.ts --platform=node --target=node16.4 --format=cjs --bundle --minify --main-fields=main --outfile=dist/index.js --external:pg-native",
     "dev": "nodemon",
-    "lint": "eslint --fix --ext .ts ./src",
+    "lint": "npx eslint --fix --ext .ts ./src",
     "migration": "npx drizzle-kit generate:pg",
     "t": "tsc"
   },
@@ -39,6 +39,8 @@
     "@types/nodemon": "^1.19.2",
     "@types/pg": "^8.6.6",
     "@types/response-time": "^2.3.5",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
     "drizzle-kit": "^0.17.0",
     "nodemon": "^2.0.21",
     "tsconfig-paths": "^4.1.2",

@@ -1,5 +1,4 @@
 {
-    "extends": ["prettier"],
     "overrides": [
     //   typescript
       {

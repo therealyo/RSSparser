@@ -1,4 +1,4 @@
 {
     "out": "./migrations",
-    "schema": "./src/drizzle/database"
+    "schema": "./src/database"
 }
