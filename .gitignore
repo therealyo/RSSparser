@@ -125,3 +125,6 @@ dist
 
 #dokku config
 config.txt
+
+#file for testing features
+test.ts
