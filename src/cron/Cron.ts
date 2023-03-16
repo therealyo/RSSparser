@@ -1,6 +1,6 @@
 import cron from 'cron';
 
-import { CronTask } from '@/interfaces/process';
+import { CronTask } from '@/interfaces/CronTask';
 
 class Cron {
   private readonly cron: typeof cron;

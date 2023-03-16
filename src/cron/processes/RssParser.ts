@@ -1,4 +1,4 @@
-import { CronTask } from '@/interfaces/process';
+import { CronTask } from '@/interfaces/CronTask';
 
 export interface PreparedMessages {
   [telegramId: number]: string 
