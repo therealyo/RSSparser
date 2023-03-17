@@ -1,10 +1,20 @@
 import { NodePgDatabase } from "drizzle-orm/node-postgres";
-import { and, asc, desc, eq, or } from 'drizzle-orm/expressions';
+import { and, asc, desc, eq, inArray, or } from 'drizzle-orm/expressions';
 
 import postsTable, { NewPost, Post } from "@/database/PostsTable";
 import { SearchConfig } from "@/interfaces/SearchConfig";
+import { PgColumn } from "drizzle-orm/pg-core/columns";
+
+type SortFields = {
+    [key: string]: PgColumn<any>
+}
 
 class Posts {
+    private sortFields: SortFields = {
+        "alph": postsTable.title,
+        "date": postsTable.pubDate
+    }
+
     public constructor(
         private db: NodePgDatabase
     ) {}
@@ -32,7 +42,8 @@ class Posts {
     public getAll = async (): Promise<Post[]> => 
         this.db
             .select()
-            .from(postsTable);
+            .from(postsTable)
+            .where(eq(postsTable.deleted, false));
 
     public getExistingIds = async (): Promise<string[]> => 
         this.db
@@ -68,7 +79,24 @@ class Posts {
     }
 
     public search = async (searchConfig: SearchConfig): Promise<Post[]> => {
-        return [];
+        const sortField = this.sortFields[searchConfig.sort.field]
+
+        const sortOrder = searchConfig.sort.order === "asc" 
+            ? asc
+            : desc
+
+        return await this.db
+            .select()
+            .from(postsTable)
+            .where(
+                and(
+                    searchConfig.search,
+                    searchConfig.categories,
+                )
+            )
+            .orderBy(sortOrder(sortField))
+            .limit(searchConfig.pageSize)
+            .offset((searchConfig.page - 1) * 10)
     } 
 }
 

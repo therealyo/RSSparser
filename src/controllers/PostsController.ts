@@ -6,11 +6,13 @@ import Controller from "./Controller";
 import Posts from "@/repositories/Posts";
 import { Post } from '@/database/PostsTable';
 
-import { getPostDto } from '@/dtos/getPostDto';
-import { deletePostDto } from '@/dtos/deletePostDto';
-import { updatePostDto } from '@/dtos/updatePostDto';
-import { createPostDto } from '@/dtos/createPostDto';
+import { generateSearchConfig } from '@/utils/searchUtil';
 
+import { getPostRequest } from '@/dtos/getPostDto';
+import { deletePostRequest } from '@/dtos/deletePostDto';
+import { updatePostRequest } from '@/dtos/updatePostDto';
+import { createPostRequest } from '@/dtos/createPostDto';
+import { searchPostRequest, SearchPostQuery } from '@/dtos/searchPostDto';
 
 class PostsController extends Controller {
     public constructor(
@@ -22,14 +24,14 @@ class PostsController extends Controller {
     }
 
     private initializeRoutes = () => {
-        this.router.get("/", this.validateZod, this.searchPosts);
-        this.router.get("/:guid", this.validateZod(getPostDto), this.getPost);
+        this.router.get("/", this.validateZod(searchPostRequest), this.searchPosts);
+        this.router.get("/:guid", this.validateZod(getPostRequest), this.getPost);
 
-        this.router.post("/", this.validateZod(createPostDto), this.createPost);
+        this.router.post("/", this.validateZod(createPostRequest), this.createPost);
 
-        this.router.patch("/:guid", this.validateZod(updatePostDto), this.updatePost)
+        this.router.patch("/:guid", this.validateZod(updatePostRequest), this.updatePost)
         
-        this.router.delete("/:guid", this.validateZod(deletePostDto), this.deletePost)
+        this.router.delete("/:guid", this.validateZod(deletePostRequest), this.deletePost)
     }
 
     private getPost = async (
@@ -87,7 +89,7 @@ class PostsController extends Controller {
             const post = await this.posts.getPost(guid)
 
             if (!post || post.deleted) {
-                throw Error(`post does not exist`)
+                
             }
 
             const updated = await this.posts.updatePost(guid, update)
@@ -106,6 +108,11 @@ class PostsController extends Controller {
     ) => {
         try {
             const { guid } = req.params
+            const post = await this.posts.getPost(guid)
+            if (!post || post.deleted) {
+                throw Error(`post does not exist`)
+            }
+
             await this.posts.deletePost(guid)
 
             return res.status(200).json("deleted")
@@ -117,10 +124,22 @@ class PostsController extends Controller {
     }
 
     private searchPosts = async (
-        req: Request, 
+        req: Request<{}, {}, {}, SearchPostQuery>, 
         res: Response, 
         next: NextFunction
-    ) => {}
+    ) => {
+        try {
+            const config = generateSearchConfig(req.query)
+            const matchedPosts = await this.posts.search(config)
+            const totalPosts = (await this.posts.getAll()).length
+
+            return res.status(200).json({ data: matchedPosts, total: totalPosts, pageSize: Number(req.query.pageSize) })
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                next(badRequest(e))
+            }
+        }
+    }
 
 }
 
