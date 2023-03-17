@@ -8,6 +8,7 @@ export type NewPost = InferModel<typeof posts, "insert">
 
 const posts = pgTable('posts', {
         guid: varchar('guid').primaryKey(),
+        title: varchar("title"),
         creator: varchar("creator", {length: 100}),
         link: varchar("link", {length:256}),
         pubDate: timestamp("pub_date", { mode: "string", precision: 6, withTimezone: true }),
@@ -17,9 +18,9 @@ const posts = pgTable('posts', {
         deleted: boolean("deleted").default(false)
     }, (posts) => {
         return {
-            createIdx: index("creator_idx").on(posts.creator).using(sql``),
+            createIdx: index("creator_idx").on(posts.creator),
             categoriesIdx: index("categories_idx").on(posts.categories),
-
+            titleIdx: index("title_idx").on(posts.title)
         }
     }
 );
