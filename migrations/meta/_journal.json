@@ -7,6 +7,12 @@
       "version": "5",
       "when": 1679042256152,
       "tag": "0000_green_wiccan"
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1679060920960,
+      "tag": "0001_hot_omega_sentinel"
     }
   ]
 }
