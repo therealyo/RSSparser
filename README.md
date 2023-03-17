@@ -27,7 +27,9 @@ All required variables are set in `.env.example`
 
 To start application locally using local postgres dastabase run `make run`
 
-To access swagger docs visit `http://18.134.182.196/docs`
+<!-- To access swagger docs visit `http://18.134.182.196/docs` -->
+Don't know why, but swagger doc does not show on remote server. So to see documentation go to `http://localhost:APP_PORT/docs` when running locally
+
 
 ##### Additional info to documentation
 
