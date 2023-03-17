@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "7ed331ef-fcf9-4b4d-b664-a84fce93aaf2",
+  "id": "5f826b6c-da3c-4e6e-b5d6-034bc6823d98",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "posts": {
@@ -10,7 +10,7 @@
       "columns": {
         "guid": {
           "name": "guid",
-          "type": "integer",
+          "type": "varchar",
           "primaryKey": true,
           "notNull": true
         },
@@ -49,6 +49,13 @@
           "type": "jsonb",
           "primaryKey": false,
           "notNull": false
+        },
+        "deleted": {
+          "name": "deleted",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
         }
       },
       "indexes": {
