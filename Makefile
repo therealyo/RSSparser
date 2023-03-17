@@ -30,11 +30,11 @@ run-database:
 
 .PHONY: build-docker
 build-docker: 
-	docker build -t rss-parser:latest
+	docker build . -t rss-parser:latest
 
 .PHONY: start-docker
 start-docker: 
-	docker run --name rss-parser -p 5000:5000 -d rss-parser:latest
+	docker run --name rss-parser -p 5000:5000 -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -e POSTGRES_DB=$POSTGRES_DB -e APP_PORT=5000 -e NODE_ENV=production -d rss-parser:latest
 
 # -----------------------------------------------Docker compose commands------------------------------------------------
 .PHONY: run
