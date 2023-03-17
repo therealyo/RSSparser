@@ -47,7 +47,7 @@ const main = async () => {
     const rssTask = new RssParser(posts)
     cron.addProcess(rssTask);
 
-    const port = process.env.APP_PORT;
+    const port = process.env.APP_PORT || 5000;
     const app = new App(controllers, port);
     app.listen();
 
