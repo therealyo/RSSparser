@@ -174,7 +174,7 @@ class PostsController extends Controller {
             const post = await this.posts.getPost(guid)
 
             if (!post || post.deleted) {
-                
+                throw Error("post does not exist")
             }
 
             const updated = await this.posts.updatePost(guid, update)
