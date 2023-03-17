@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { badRequest } from '@hapi/boom';
+import { badData } from '@hapi/boom';
 import { RequestHandler, Router } from 'express';
 
 abstract class Controller {
@@ -13,14 +13,18 @@ abstract class Controller {
     this.router = Router();
   }
   protected validateZod =
-    (schema: z.ZodTypeAny): RequestHandler =>
+    (schema: z.AnyZodObject): RequestHandler<any, any, any, any> =>
     async (req, res, next) => {
-      const parsed = schema.safeParse(req.body);
+      const parsed = schema.safeParse({
+        body: req.body,
+        query: req.query,
+        params: req.params
+      });
       if (parsed.success) {
         return next();
       } else {
         return next(
-          badRequest(
+          badData(
             parsed.error.issues
               .map(({ path, message }) => `${path.join('.')}: ${message}`)
               .join('; '),
