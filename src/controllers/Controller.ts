@@ -20,7 +20,11 @@ abstract class Controller {
         query: req.query,
         params: req.params
       });
+
       if (parsed.success) {
+        req.body = parsed.data.body
+        req.query = parsed.data.query
+        req.params = parsed.data.params 
         return next();
       } else {
         return next(
