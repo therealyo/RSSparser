@@ -5,15 +5,14 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 
 import App from '@/App';
+import Cron from '@/cron/Cron';
+import RssParser from '@/cron/processes/RssParser';
 
 import Controller from '@/controllers/Controller';
 import HealthController from '@/controllers/HealthController';
 import PostsController from '@/controllers/PostsController';
 
 import Posts from '@/repositories/Posts';
-import { sql } from 'drizzle-orm';
-// import RssParser from './cron/processes/RssParser';
-// import Cron from './cron/Cron';
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config()
@@ -44,9 +43,9 @@ const main = async () => {
       postsController
     ];
 
-    // const cron = new Cron()
-    // const rssTask = new RssParser()
-    // cron.addProcess(rssTask);
+    const cron = new Cron()
+    const rssTask = new RssParser(posts)
+    cron.addProcess(rssTask);
 
     const port = process.env.APP_PORT;
     const app = new App(controllers, port);
