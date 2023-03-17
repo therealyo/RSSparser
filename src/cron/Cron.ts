@@ -9,8 +9,8 @@ class Cron {
     this.cron = cron;
   }
 
-  public addProcess = (process: CronTask) => {
-    this.cron.job(process.interval, process.action, null, true, 'Europe/Kiev').start();
+  public addProcess = (task: CronTask) => {
+    this.cron.job(task.interval, task.action, null, true, 'Europe/Kiev').start();
   };
 }
 
