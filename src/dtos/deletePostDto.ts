@@ -1,9 +1,13 @@
 import { z } from "zod"
 
-export const deletePostDto = z.object({
-    params: z.object({
-        guid: z.string()
-    })
-})
 
-export type DeletePostDto = z.infer<typeof deletePostDto>;
+export const deletePostParams = z.object({
+    guid: z.string()
+});
+
+export const deletePostRequest = z.object({
+    params: deletePostParams
+});
+
+export type DeletePostRequest = z.infer<typeof deletePostRequest>;
+export type DeletePostParams = z.infer<typeof deletePostParams>;
