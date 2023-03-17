@@ -17,6 +17,8 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - postgres
+    links:
+      - postgres
     ports:
       - "5000:5000"
     working_dir: /app
