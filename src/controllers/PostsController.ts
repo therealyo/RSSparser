@@ -6,7 +6,7 @@ import Controller from "./Controller";
 import Posts from "@/repositories/Posts";
 import { Post } from '@/database/PostsTable';
 
-import { getPostDto } from '@/dtos/GetPostDto';
+import { getPostDto } from '@/dtos/getPostDto';
 import { deletePostDto } from '@/dtos/deletePostDto';
 import { updatePostDto } from '@/dtos/updatePostDto';
 import { createPostDto } from '@/dtos/createPostDto';
