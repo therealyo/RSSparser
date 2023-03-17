@@ -18,14 +18,30 @@ class Posts {
         return created
     }
 
-    public createPosts = async (posts: NewPost[]): Promise<Post[]> => 
-        this.db
-            .insert(postsTable)
-            .values(...posts)
-            .returning();
-    
+    public createPosts = async (posts: NewPost[]): Promise<Post[]> => {
+        if (posts.length !== 0) {
+            await this.db
+                .insert(postsTable)
+                .values(...posts)
+                .returning()
+            }
 
-    public getPost = async (guid: number): Promise<Post> => {
+        return []
+    }   
+
+    public getAll = async (): Promise<Post[]> => 
+        this.db
+            .select()
+            .from(postsTable);
+
+    public getExistingIds = async (): Promise<string[]> => 
+        this.db
+            .select({ guid: postsTable.guid })
+            .from(postsTable)
+            .then((guids) => guids.map(({guid}) => guid))
+            
+
+    public getPost = async (guid: string): Promise<Post> => {
         const [post] = await this.db
             .select()
             .from(postsTable)
@@ -34,7 +50,7 @@ class Posts {
         return post;
     }
 
-    public updatePost = async (guid: number, update: Partial<Post>): Promise<Post> => {
+    public updatePost = async (guid: string, update: Partial<Post>): Promise<Post> => {
         const [updated] = await this.db
             .update(postsTable)
             .set(update)
@@ -44,13 +60,11 @@ class Posts {
         return updated;
     }
 
-    public deletePost = async (guid: number): Promise<Post> => {
-        const [deleted] = await this.db
-            .delete(postsTable)
+    public deletePost = async (guid: string): Promise<void> => {
+        await this.db
+            .update(postsTable)
+            .set({deleted: true})
             .where(eq(postsTable.guid, guid))
-            .returning();
-
-        return deleted;
     }
 
     public search = async (searchConfig: SearchConfig): Promise<Post[]> => {
