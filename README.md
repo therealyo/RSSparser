@@ -27,4 +27,15 @@ All required variables are set in `.env.example`
 
 To start application locally using local postgres dastabase run `make run`
 
-<!-- To access swagger docs visit `http://18.134.182.196/swagger/index.html` -->
+To access swagger docs visit `http://18.134.182.196/docs`
+
+##### Additional info to documentation
+
+Don't know why(probably some mistakes in openapi specification that I wrote), but swagger does not show query params for search endpoint, that's why I will leave them here: \
+
+1. search: `string` - represents information that was entered for search(you can search by title, creator or content)
+2. categories: `array[string]` - list of categories that you are looking for
+3. sort: `string` - how to sort data, MUST BE one of possible values `['alph.asc', 'alph.desc', 'date.asc', 'date.desc']`
+4. page: `number`- current page
+5. pageSize: `number` - how many items to show on one page
+---

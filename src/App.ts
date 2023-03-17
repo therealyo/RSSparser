@@ -7,8 +7,12 @@ import express, {
 } from 'express';
 import { isBoom } from '@hapi/boom';
 import responseTime from 'response-time';
+import swaggerUi from "swagger-ui-express"
 
 import Controller from './controllers/Controller';
+import { swaggerSpec } from './utils/swagger';
+
+// import * as swaggerDoc from "./swagger.json"
 
 class App {
   public app: Application;
@@ -25,6 +29,7 @@ class App {
 
     this.initializeMiddlewares();
     this.initializeControllers();
+    this.initializeDoc()
     this.initializeErrorHandler();
   }
 
@@ -38,6 +43,10 @@ class App {
     this.app.use(responseTime());
     this.app.use(express.json());
   };
+
+  private initializeDoc = () => {
+    this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+  }
 
   private initializeControllers = () => {
     this.controllers.forEach((controller: { path: string; router: Router ; }) => {

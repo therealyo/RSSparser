@@ -1,5 +1,27 @@
 import { z } from "zod"
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     SearchResults:
+ *       type: object
+ *       properties:
+ *         data:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Post'
+ *         total:
+ *           type: number
+ *         pageSize:
+ *           type: number
+ *       required:
+ *         - results
+ *         - total
+ *         - pageSize
+ * 
+ */
+
 export const searchPostQuery = z.object({
     search: z.string().optional(),
     creator: z.array(z.string()).optional(),
